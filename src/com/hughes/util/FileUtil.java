@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 
 public final class FileUtil {
@@ -32,6 +33,11 @@ public final class FileUtil {
 
   public static Object read(final String file) throws IOException, ClassNotFoundException {
     return read(new File(file));
+  }
+  
+  public static String readLine(final RandomAccessFile file, final long startPos) throws IOException {
+    file.seek(startPos);
+    return file.readLine();
   }
 
 }
