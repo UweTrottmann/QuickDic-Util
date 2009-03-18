@@ -2,7 +2,6 @@ package com.hughes.util.raf;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.lang.reflect.Constructor;
 
 
 public class RAFSerializableSerializer<T extends RAFSerializable<T>>  implements RAFSerializer<T> {
