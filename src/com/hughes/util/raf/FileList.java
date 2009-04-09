@@ -38,7 +38,7 @@ public class FileList<T> extends AbstractList<T> {
   @Override
   public T get(final int i) {
     if (i < 0 || i >= size) {
-      throw new IndexOutOfBoundsException("" + i);
+      throw new IndexOutOfBoundsException(i + ", size=" + size);
     }
     try {
       synchronized (raf) {
