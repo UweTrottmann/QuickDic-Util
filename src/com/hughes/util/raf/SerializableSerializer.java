@@ -34,7 +34,7 @@ public class SerializableSerializer<T>  implements RAFSerializer<T> {
     try {
       result = (Serializable) ois.readObject();
     } catch (ClassNotFoundException e) {
-      throw new IOException(e);
+      throw new RuntimeException(e);
     }
     ois.close();
     return (T) result;
