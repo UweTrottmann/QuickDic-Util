@@ -10,7 +10,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-public class FileListTest extends TestCase {
+public class RAFListTest extends TestCase {
 
   public void testFileListString() throws IOException {
     testFileList(RAFSerializer.STRING);
@@ -28,16 +28,16 @@ public class FileListTest extends TestCase {
     raf.writeUTF("Hello World!");
     final List<String> l1 = Arrays.asList("1a", "1bc", "1def");
     final List<String> l2 = Arrays.asList("2aa", "2abc", "2adef");
-    FileList.write(raf, l1, serializer);
-    FileList.write(raf, l2, serializer);
+    RAFList.write(raf, l1, serializer);
+    RAFList.write(raf, l2, serializer);
     raf.writeUTF("Goodbye World!");
 
     raf.seek(0);
     assertEquals("Hello World!", raf.readUTF());
-    final FileList<String> l1Copy = new FileList<String>(raf,
+    final RAFList<String> l1Copy = RAFList.create(raf,
         serializer, raf.getFilePointer());
     assertEquals(l1, l1Copy);
-    final FileList<String> l2Copy = new FileList<String>(raf,
+    final RAFList<String> l2Copy = RAFList.create(raf,
         serializer, l1Copy.getEndOffset());
     assertEquals(l2, l2Copy);
     raf.seek(l2Copy.getEndOffset());
@@ -51,12 +51,12 @@ public class FileListTest extends TestCase {
 
     raf.writeUTF("Hello World!");
     final List<String> l1 = Collections.emptyList();
-    FileList.write(raf, l1, RAFSerializer.STRING);
+    RAFList.write(raf, l1, RAFSerializer.STRING);
     raf.writeUTF("Goodbye World!");
 
     raf.seek(0);
     assertEquals("Hello World!", raf.readUTF());
-    final FileList<String> l1Copy = new FileList<String>(raf,
+    final RAFList<String> l1Copy = RAFList.create(raf,
         RAFSerializer.STRING, raf.getFilePointer());
     assertEquals(l1, l1Copy);
     raf.seek(l1Copy.getEndOffset());

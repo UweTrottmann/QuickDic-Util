@@ -5,17 +5,17 @@ import java.io.RandomAccessFile;
 import java.util.AbstractList;
 import java.util.Collection;
 
-public class UniformFileList<T> extends AbstractList<T> {
+public class UniformRAFList<T> extends AbstractList<T> {
 
   final RandomAccessFile raf;
-  final RAFSerializer<T> serializer;
+  final RAFListSerializer<T> serializer;
   final int size;
   final int datumSize;
   final long dataStart;
   final long endOffset;
 
-  public UniformFileList(final RandomAccessFile raf,
-      final RAFSerializer<T> serializer, final long startOffset)
+  public UniformRAFList(final RandomAccessFile raf,
+      final RAFListSerializer<T> serializer, final long startOffset)
       throws IOException {
     synchronized (raf) {
       this.raf = raf;
@@ -42,7 +42,7 @@ public class UniformFileList<T> extends AbstractList<T> {
     try {
       synchronized (raf) {
         raf.seek(dataStart + i * datumSize);
-        final T result = serializer.read(raf);
+        final T result = serializer.read(raf, i);
         if (raf.getFilePointer() != dataStart + (i + 1) * datumSize) {
           throw new RuntimeException("Read "
               + (raf.getFilePointer() - (dataStart + i * datumSize))
@@ -60,14 +60,19 @@ public class UniformFileList<T> extends AbstractList<T> {
     return size;
   }
 
-  public static <T> UniformFileList<T> create(final RandomAccessFile raf,
+  public static <T> UniformRAFList<T> create(final RandomAccessFile raf,
+      final RAFListSerializer<T> serializer, final long startOffset)
+      throws IOException {
+    return new UniformRAFList<T>(raf, serializer, startOffset);
+  }
+  public static <T> UniformRAFList<T> create(final RandomAccessFile raf,
       final RAFSerializer<T> serializer, final long startOffset)
       throws IOException {
-    return new UniformFileList<T>(raf, serializer, startOffset);
+    return new UniformRAFList<T>(raf, RAFList.getWrapper(serializer), startOffset);
   }
 
   public static <T> void write(final RandomAccessFile raf,
-      final Collection<T> list, final RAFSerializer<T> serializer,
+      final Collection<T> list, final RAFListSerializer<T> serializer,
       final int datumSize) throws IOException {
     raf.writeInt(list.size());
     raf.writeInt(datumSize);
@@ -82,4 +87,18 @@ public class UniformFileList<T> extends AbstractList<T> {
     }
   }
 
+  public static <T> void write(final RandomAccessFile raf,
+      final Collection<T> list, final RAFSerializer<T> serializer,
+      final int datumSize) throws IOException {
+    write(raf, list, new RAFListSerializer<T>() {
+      @Override
+      public T read(RandomAccessFile raf, final int readIndex)
+          throws IOException {
+        return serializer.read(raf);
+      }
+      @Override
+      public void write(RandomAccessFile raf, T t) throws IOException {
+        serializer.write(raf, t);
+      }}, datumSize);
+  }
 }
