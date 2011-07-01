@@ -63,4 +63,40 @@ public final class StringUtil {
     while (remove(s, start, end, true) != null);
     return s;
   }
+  
+  public static StringBuilder appendLine(final StringBuilder s, final CharSequence line) {
+    if (s.length() > 0) {
+      s.append("\n");
+    }
+    s.append(line);
+    return s;
+  }
+  
+  public static int nestedIndexOf(final String s, final int startPos, final String open, final String close) {
+    int depth = 0;
+    for (int i = startPos; i < s.length(); ) {
+      if (s.startsWith(close, i)) {
+        if (depth == 0) {
+          return i;
+        } else {
+          --depth;
+          i += close.length();
+        }
+      } else if (s.startsWith(open, i)) {
+        ++depth;
+        i += open.length();
+      } else {
+        ++i;
+      }
+    }
+    return -1;
+  }
+
+  public static int safeIndexOf(String s, String search) {
+    final int i = s.indexOf(search);
+    if (i == -1) {
+      return s.length();
+    }
+    return i;
+  }
 }

@@ -11,6 +11,13 @@ public class MapUtil {
     return map.get(key);
   }
 
+  public static <K,V> V safeGetOrPut(final Map<K,V> map, K key, V defaultValue) {
+    if (!map.containsKey(key)) {
+      map.put(key, defaultValue);
+    }
+    return map.get(key);
+  }
+
   public static <K,V> V safeGet(final Map<K,V> map, K key, Class<V> valueClass) {
     if (!map.containsKey(key)) {
       try {

@@ -20,6 +20,10 @@ public class CachingList<T> extends AbstractList<T> {
     return new CachingList<T>(list, cacheSize);
   }
 
+  public static <T> CachingList<T> createFullyCached(final List<T> list) {
+    return new CachingList<T>(list, list.size());
+  }
+
   @Override
   public T get(int i) {
     T t = cache.get(i);
