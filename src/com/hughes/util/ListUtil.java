@@ -22,4 +22,19 @@ public final class ListUtil {
     return list.get(list.size() - 1);
   }
   
+  public static <T> T get(final List<T> list, final int index, final T defaultValue) {
+    return index < list.size() ? list.get(index) : defaultValue;
+  }
+
+  public static <T> T get(final List<T> list, final int index) {
+    return get(list, index, null);
+  }
+
+  public static <T> T remove(final List<T> list, final int index, final T defaultValue) {
+    return index < list.size() ? list.remove(index) : defaultValue;
+  }
+  
+  
+
+  
 }
