@@ -1,4 +1,4 @@
-// Copyright 2011 Google Inc. All Rights Reserved.
+// Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 
 package com.hughes.util;
 
+import java.io.InputStream;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,5 +114,9 @@ public final class StringUtil {
       return s.length();
     }
     return i;
+  }
+
+  public static String readToString(final InputStream inputStream) {
+    return new Scanner(inputStream).useDelimiter("\\A").next();
   }
 }
