@@ -18,8 +18,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.RandomAccess;
 
-public class RAFList<T> extends AbstractList<T> {
+public class RAFList<T> extends AbstractList<T> implements RandomAccess {
 
   private static final int LONG_BYTES = Long.SIZE / 8;
 

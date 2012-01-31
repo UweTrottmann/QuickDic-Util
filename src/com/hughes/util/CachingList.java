@@ -16,8 +16,9 @@ package com.hughes.util;
 
 import java.util.AbstractList;
 import java.util.List;
+import java.util.RandomAccess;
 
-public class CachingList<T> extends AbstractList<T> {
+public class CachingList<T> extends AbstractList<T> implements RandomAccess {
   
   private final List<T> list;
   private final int size;

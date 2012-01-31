@@ -18,8 +18,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.RandomAccess;
 
-public class UniformRAFList<T> extends AbstractList<T> {
+public class UniformRAFList<T> extends AbstractList<T> implements RandomAccess {
 
   final RandomAccessFile raf;
   final RAFListSerializer<T> serializer;
